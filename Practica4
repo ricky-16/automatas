@@ -324,21 +324,27 @@ public class Practica4 {
 
 			for (Datos error : erroresArchivo) {
 				String tipoError;
+				String detalleError = "";
 				String palabra = error.getPalabra();
 
 				if (palabra.matches("[{}()\\[\\];,:]")) {
-					tipoError = "Token desconocido";
+					tipoError = "Caracter invalido";
 				} else if (palabra.matches("\"[^\n\r]*") && !palabra.matches("\".*?\"")) {
 					tipoError = "Cadena faltante";
+					detalleError = " - Falta comilla de cierre (\")";
 				} else if (palabra.matches("/\\*.*") && !palabra.matches("/\\*.*?\\*/")) {
 					tipoError = "Comentario faltante";
+					
+				// Se eliminó el detalle específico para cada carácter
 				} else if (palabra.matches("[^a-zA-Z0-9_\\s]")) {
-					tipoError = "Token desconocido";
+					tipoError = "Caracter invalido";
+				} else if (palabra.matches("[A-Z]")) {
+					tipoError = "Caracter invalido";
 				} else {
 					tipoError = "Error desconocido";
 				}
 
-				writerErrores.write(tipoError + ": " + palabra + ", " + error.getPos());
+				writerErrores.write(tipoError + ": " + palabra + detalleError + ", " + error.getPos());
 				writerErrores.newLine();
 			}
 
