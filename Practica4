@@ -6,7 +6,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -88,7 +87,8 @@ public class Practica4 {
 	}
 
 	private static void Lectura(String linea, int numLinea) {
-		String patron = "/\\*.*?\\*/|\".*?\"|&&|\\|\\||!|==|!=|<=|>=|<|>|\\+|-|\\*|/|%|=|[(),;:\\[\\]]|-?\\d+\\.\\d+|-?\\d+|"
+		// Modificado para capturar comentarios completos o incompletos
+		String patron = "/\\*.*?\\*/|/\\*.*|\".*?\"|&&|\\|\\||!|==|!=|<=|>=|<|>|\\+|-|\\*|/|%|=|[(),;:\\[\\]]|-?\\d+\\.\\d+|-?\\d+|"
 				+ "[a-z][a-zA-Z0-9_]*|\\s+";
 		Pattern regex = Pattern.compile(patron);
 		Matcher coincidencia = regex.matcher(linea);
@@ -102,8 +102,10 @@ public class Practica4 {
 					palabrasArchivo.addLast(new Datos(textoNoCoincide, numLinea));
 				}
 			}
-
-			String token = coincidencia.group();
+			
+			String token = coincidencia.group().trim();
+			if (token.isEmpty()) continue;
+			  
 			if (!token.matches("\\s+")) {
 				palabrasArchivo.addLast(new Datos(token, numLinea));
 				System.out.println("TOKEN EXTRAÍDO: " + token);
@@ -166,9 +168,15 @@ public class Practica4 {
 	}
 
 	private static void identificarComentario(Datos token) {
+		// Identificar comentarios completos
 		if (token.getPalabra().matches("/\\*.*?\\*/")) {
 			token.setId(-1);
 			token.setToken(-100);
+		}
+		// Identificar comentarios incompletos
+		else if (token.getPalabra().matches("/\\*.*")) {
+			token.setId(-1);
+			// No asignar token para que se considere un error
 		}
 	}
 
@@ -255,20 +263,49 @@ public class Practica4 {
 
 	public static void Errores() {
 		for (Datos palabra : palabrasArchivo) {
-            
-            if (palabra.getToken() == 0 && !palabra.getPalabra().matches("\\s+")) {
-                erroresArchivo.add(new Datos(
-                        palabra.getPalabra(),
-                        palabra.getToken(),
-                        palabra.getId(),
-                        palabra.getPos(),
-                        palabra.getLineaSintaxis()
-                ));
-            }
-        }
-    }
-
-
+			// Detectar comentarios incompletos
+			if (palabra.getPalabra().matches("/\\*.*") && !palabra.getPalabra().matches("/\\*.*?\\*/")) {
+				erroresArchivo.add(new Datos(
+					palabra.getPalabra(),
+					palabra.getToken(),
+					palabra.getId(),
+					palabra.getPos(),
+					palabra.getLineaSintaxis()
+				));
+			}
+			// Detectar cadenas incompletas
+			else if (palabra.getPalabra().matches("\"[^\"\n\r]*") && !palabra.getPalabra().matches("\".*?\"")) {
+				erroresArchivo.add(new Datos(
+					palabra.getPalabra(),
+					palabra.getToken(),
+					palabra.getId(),
+					palabra.getPos(),
+					palabra.getLineaSintaxis()
+				));
+			}
+			// Detectar los caracteres específicos que queremos como errores
+			else if (palabra.getToken() == 0 && !palabra.getPalabra().trim().isEmpty()) {
+				String[] errorCharacters = {"D", "$", "I", "."};
+				boolean isErrorChar = false;
+				for (String errorChar : errorCharacters) {
+					if (palabra.getPalabra().equals(errorChar)) {
+						isErrorChar = true;
+						break;
+					}
+				}
+				
+				if (isErrorChar) {
+					erroresArchivo.add(new Datos(
+						palabra.getPalabra(),
+						palabra.getToken(),
+						palabra.getId(),
+						palabra.getPos(),
+						palabra.getLineaSintaxis()
+					));
+				}
+			}
+		}
+	}
 
 	private static void escribirArchivo() {
 		try {
@@ -291,9 +328,9 @@ public class Practica4 {
 
 				if (palabra.matches("[{}()\\[\\];,:]")) {
 					tipoError = "Token desconocido";
-				} else if (palabra.matches("\"[^\n\r]*")) {
+				} else if (palabra.matches("\"[^\n\r]*") && !palabra.matches("\".*?\"")) {
 					tipoError = "Cadena faltante";
-				} else if (palabra.matches("/\\*[^*]*")) {
+				} else if (palabra.matches("/\\*.*") && !palabra.matches("/\\*.*?\\*/")) {
 					tipoError = "Comentario faltante";
 				} else if (palabra.matches("[^a-zA-Z0-9_\\s]")) {
 					tipoError = "Token desconocido";
@@ -313,5 +350,4 @@ public class Practica4 {
 			JOptionPane.showMessageDialog(null, "Error al escribir los archivos: " + e.getMessage());
 		}
 	}
-
 }
