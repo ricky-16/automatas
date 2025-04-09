@@ -1,0 +1,4 @@
+Caracter invalido: D, 1
+Caracter invalido: $, 2
+Comentario faltante: /* Inicio del programa, 8
+Caracter invalido: ., 13

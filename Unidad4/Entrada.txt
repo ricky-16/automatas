@@ -1,0 +1,42 @@
+/* programa de prueba */ program Dos_1;
+var%$
+int  cont, x,suma,valor ; 
+real  rReal,r2Real;
+string  sS1__1;
+bool  bBBBB1,bB_2,b2;
+array  [23[]];
+/* Inicio del programa
+&&&&
+begin 
+read(valor)); 
+/* variables   */
+x=0.4.;
+rReal=--34.565;
+while (valor>=0 || sS1_1<2 && !bB_2 )do
+  begin
+    suma = cont+ 9;
+    b2= 17!=67
+  end
+repeat 
+begin 
+end 
+until ( bB_2 == false
+procedure log( ) 
+begin 
+end
+function log2() 
+begin 
+end
+if (suma<=10 && bB2==true) then 
+  begin 
+    x =x+(10* 5 )/ 2;
+    sS1=" cadena de caracteres " ; 
+    ss2= ""; 
+  end
+else
+  begin
+    write(suma) ; 
+    suma = valor * 67; 
+  end 
+valor = suma * 10 +37; 
+end

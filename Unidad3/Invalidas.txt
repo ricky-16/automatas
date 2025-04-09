@@ -1,0 +1,16 @@
+CADENA,LENGUAJE
+2&&&///,Invalido
+3///,Invalido
+9999letrasLETRAS///&&&,Invalido
+9&/99,Invalido
+7!,Invalido
+letraminuscula1109$$,Invalido
+9$$$$,Invalido
+9982$$$$$$,Invalido
+9$$$,Invalido
+l$$,Invalido
+_,Invalido
+Y—,Invalido
+letra_,Invalido
+__,Invalido
+9#,Invalido

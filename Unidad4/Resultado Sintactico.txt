@@ -1,0 +1,6 @@
+Se encontraron errores sintácticos:
+Error sintáctico al final del archivo: Se esperaba 'program'
+Error sintáctico al final del archivo: Se esperaba un identificador después de 'program'
+Error sintáctico al final del archivo: Se esperaba ';' después del nombre del programa
+Error sintáctico al final del archivo: Se esperaba 'begin'
+Error sintáctico al final del archivo: Se esperaba 'end'

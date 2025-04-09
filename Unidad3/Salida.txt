@@ -1,0 +1,11 @@
+CADENA,LENGUAJE
+1letrasLETRAS,Lenguaje1
+0&,Lenguaje1
+7&&&&&,Lenguaje1
+LENGUAJE3,Lenguaje3
+LETRASMAYUSCULAS___9902,Lenguaje3
+Le_8,Lenguaje3
+M9_,Lenguaje3
+YYY____,Lenguaje3
+NOVALIDAS,Lenguaje3
+98888,Lenguaje1
